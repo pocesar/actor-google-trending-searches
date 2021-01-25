@@ -6,6 +6,8 @@
         "geo": {
             "title": "Country",
             "type": "string",
+            "prefill": "US",
+            "default": "US",
             "description": "The country to fetch the information from",
             "enum": [
                 "AR",

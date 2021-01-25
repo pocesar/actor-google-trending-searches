@@ -18,6 +18,10 @@ Apify.main(async () => {
      */
     const input = await Apify.getInput();
 
+    if (!/[A-Z]{2}/.test(input.geo)) {
+        throw new Error(`You need to provide a country ISO code as geo input, got ${input.geo}`);
+    }
+
     const requestQueue = await Apify.openRequestQueue();
     const proxyConfig = await proxyConfiguration(input.proxy);
 
@@ -34,6 +38,8 @@ Apify.main(async () => {
     if (days < 0) {
         throw new Error(`Parsed "From date" ${input.fromDate} is older than "To date" ${input.toDate}`);
     }
+
+    log.info(`Getting searches from ${input.geo} up to ${days} days ago...`);
 
     let { maxItems = 100 } = input;
 
