@@ -7,6 +7,7 @@ const {
     createAddUrl,
     extendFunction,
     getTrendingSearches,
+    proxyConfiguration,
 } = require('./functions');
 
 const { log } = Apify.utils;
@@ -18,9 +19,7 @@ Apify.main(async () => {
     const input = await Apify.getInput();
 
     const requestQueue = await Apify.openRequestQueue();
-    const proxyConfiguration = await Apify.createProxyConfiguration({
-        ...input.proxy,
-    });
+    const proxyConfig = await proxyConfiguration(input.proxy);
 
     const addUrl = createAddUrl(requestQueue);
     const parsedFrom = parseRelativeDate(input.fromDate || 'today');
@@ -36,7 +35,7 @@ Apify.main(async () => {
         throw new Error(`Parsed "From date" ${input.fromDate} is older than "To date" ${input.toDate}`);
     }
 
-    let maxItems = input.maxItems || 15;
+    let { maxItems = 100 } = input;
 
     const extendOutputFunction = await extendFunction({
         map: async (data) => {
@@ -90,7 +89,7 @@ Apify.main(async () => {
                 }
             });
         },
-        filter: async () => maxItems-- > 0,
+        filter: async () => --maxItems > 0,
         output: async (item) => {
             await Apify.pushData(item);
         },
@@ -133,7 +132,7 @@ Apify.main(async () => {
 
     const crawler = new Apify.CheerioCrawler({
         useSessionPool: true,
-        proxyConfiguration,
+        proxyConfiguration: proxyConfig,
         ignoreSslErrors: true,
         requestQueue,
         maxRequestRetries: 10,

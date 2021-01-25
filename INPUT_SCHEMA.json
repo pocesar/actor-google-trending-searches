@@ -150,8 +150,8 @@
         "maxItems": {
             "title": "Maximum number of results",
             "description": "Limit the total amount of results you get",
-            "default": 15,
-            "prefill": 15,
+            "default": 100,
+            "prefill": 100,
             "type": "integer",
             "editor": "number"
         },
