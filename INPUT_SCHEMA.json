@@ -133,7 +133,7 @@
         },
         "fromDate": {
             "title": "From date",
-            "description": "Get items starting from this date. Max 29 days in the past",
+            "description": "Get items starting from this date going to the past. Max 29 days in the past",
             "default": "today",
             "prefill": "today",
             "pattern": "(\\d{4}-\\d{2}-\\d{2}|(\\d+ )?\\S+)",
@@ -142,9 +142,9 @@
         },
         "toDate": {
             "title": "To date",
-            "description": "Get items up to this date. Max 29 days in the past",
-            "default": "today",
-            "prefill": "today",
+            "description": "Get items from fromDate to this date. Max 29 days in the past",
+            "default": "29 days",
+            "prefill": "3 days",
             "pattern": "(\\d{4}-\\d{2}-\\d{2}|(\\d+ )?\\S+)",
             "type": "string",
             "editor": "textfield"
